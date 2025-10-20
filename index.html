@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Alumnos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f9;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    input, button {
+      padding: 8px;
+      margin: 5px;
+      font-size: 14px;
+    }
+    button {
+      background: black;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #444;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      background: #fafafa;
+    }
+    .card h3 {
+      margin-top: 0;
+      color: #444;
+    }
+    .observaciones {
+      border-left: 5px solid #f1c40f;
+      background: #fff8dc;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Consulta de Alumnos Maestra Hilda Teresa Materia Español</h1>
+  <input type="text" id="codigo" placeholder="Ingrese código del alumno">
+  <button onclick="buscarAlumno()">Buscar</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const url = "https://opensheet.elk.sh/18jJMB3QLt3lFz0ebgTTZQ0X4Fnj1V8bDPRveTVYo7bc/concentrado";
+
+    async function buscarAlumno() {
+      const codigo = document.getElementById("codigo").value.trim();
+      const res = await fetch(url);
+      const data = await res.json();
+      
+      const alumno = data.find(a => a.CODIGO && a.CODIGO.trim().toUpperCase() === codigo.toUpperCase());
+
+      if (!alumno) {
+        document.getElementById("resultado").innerHTML = "<p>No se encontró el alumno.</p>";
+        return;
+      }
+
+      const observaciones =
+        alumno["Observaciones"] ||
+        alumno["OBSERVACIONES"] ||
+        alumno["Observacion"] ||
+        alumno["OBSERVACION"] ||
+        "-";
+
+      document.getElementById("resultado").innerHTML = `
+        <div class="result">
+          <h2>${alumno.Nombre || alumno.NOMBRE} (${alumno.CODIGO})</h2>
+
+            <div class="observaciones">
+            <h3>📝 Observaciones del alumno:</h3>
+            <p>${observaciones}</p>
+            </div>
+
+          <div class="grid">
+            <div class="card">
+              <h3>1er Contenido</h3>
+              <p><b>(40%) Actividades: </b> ${alumno["Actividades"] || "-"}</p>
+              <p><b>(20%) Reportes de Lectura:</b> ${alumno["Reportes de Lectura"] || "-"}</p>
+              <p><b>(40%) Proyecto:</b> ${alumno["Proyectos"] || "-"}</p>
+              <p><b>Calificación:</b> ${alumno["TOTAL DE CALIFICACION C1"] || "-"}</p>
+            </div>
+          </div>
+            
+
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
