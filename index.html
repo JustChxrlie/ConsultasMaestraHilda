@@ -58,6 +58,10 @@
       margin: 15px 0;
       border-radius: 6px;
     }
+    /* 🔽 Nueva clase para que una tarjeta ocupe todo el ancho */
+    .full-width {
+      grid-column: 1 / -1;
+    }
   </style>
 </head>
 <body>
@@ -93,33 +97,31 @@
         <div class="result">
           <h2>${alumno.Nombre || alumno.NOMBRE} (${alumno.CODIGO})</h2>
 
-            <div class="observaciones">
+          <div class="observaciones">
             <h3>📝 Observaciones del alumno:</h3>
             <p>${observaciones}</p>
-            </div>
+          </div>
 
           <div class="grid">
             <div class="card">
               <h3>1er Contenido</h3>
-              <p><b>(40%) Actividades: </b> ${alumno["Actividades"] || "-"}</p>
+              <p><b>(40%) Actividades:</b> ${alumno["Actividades"] || "-"}</p>
               <p><b>(20%) Reportes de Lectura:</b> ${alumno["Reportes de Lectura"] || "-"}</p>
               <p><b>(40%) Proyecto:</b> ${alumno["Proyectos"] || "-"}</p>
               <p><b>Calificación:</b> ${alumno["TOTAL DE CALIFICACION C1"] || "-"}</p>
             </div>
-          </div>
-            
-            <div class="card" style="margin-top: 15px;">
-            <h3>Examen</h3>
-            <p><b>Aciertos Examen:</b> ${alumno["ACIERTOSE"] || "-"}</p>
-            <p><b>Valor del Examen:</b> ${alumno["EXAMEN"] || "-"}</p>
-            <p><b>Promedio 1er Trimestre:</b> ${alumno["TOTAL TRIMESTRE"]}</p>
-          </div>
 
+            <!-- 🔽 Tarjeta de examen ahora dentro del grid y ocupa toda la fila -->
+            <div class="card full-width">
+              <h3>Examen</h3>
+              <p><b>Aciertos Examen:</b> ${alumno["ACIERTOSE"] || "-"}</p>
+              <p><b>Valor del Examen:</b> ${alumno["EXAMEN"] || "-"}</p>
+              <p><b>Promedio 1er Trimestre:</b> ${alumno["TOTAL TRIMESTRE"] || "-"}</p>
+            </div>
+          </div>
         </div>
       `;
     }
   </script>
 </body>
 </html>
-
-
